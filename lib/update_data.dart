@@ -2,12 +2,12 @@
 import 'package:flutter/material.dart';
 
 
-class Rekomendasi extends StatefulWidget {
+class UpdateData extends StatefulWidget {
   @override
-  _RekomendasiState createState() => _RekomendasiState();
+  _UpdateDataState createState() => _UpdateDataState();
 }
 
-class _RekomendasiState extends State<Rekomendasi> {
+class _UpdateDataState extends State<UpdateData> {
 
   @override
   Widget build(BuildContext context) {

@@ -1,14 +1,14 @@
 
 import 'package:flutter/material.dart';
-import 'package:caleg/stunting.dart';
+import 'package:caleg/update_relawan.dart';
 
 
-class DataRelawan extends StatefulWidget {
+class Dashboard extends StatefulWidget {
   @override
-  _DataRelawanState createState() => _DataRelawanState();
+  _DashboardState createState() => _DashboardState();
 }
 
-class _DataRelawanState extends State<DataRelawan> {
+class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {

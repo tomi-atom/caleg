@@ -1,3 +1,6 @@
+import 'package:caleg/caleg/dashboard.dart';
+import 'package:caleg/caleg/data_koordinator.dart';
+import 'package:caleg/caleg/data_relawan.dart';
 import 'package:flutter/material.dart';
 import 'package:caleg/update_relawan.dart';
 import 'package:caleg/profile.dart';
@@ -8,17 +11,17 @@ void main() {
   runApp(MaterialApp(
     // Title
       title: "Tabs",
-      // Home
-      home: Home()));
+      // HomeCaleg
+      home: HomeCaleg()));
 }
 
-class Home extends StatefulWidget {
+class HomeCaleg extends StatefulWidget {
   @override
-  HomeState createState() => HomeState();
+  HomeCalegState createState() => HomeCalegState();
 }
 
 // SingleTickerProviderStateMixin is used for animation
-class HomeState extends State<Home> with SingleTickerProviderStateMixin {
+class HomeCalegState extends State<HomeCaleg> with SingleTickerProviderStateMixin {
   // Create a tab controller
   late TabController controller;
 
@@ -63,7 +66,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       // Set the TabBar view as the body of the Scaffold
       body: TabBarView(
         // Add tabs as widgets
-        children: <Widget>[InputRelawan(), UpdateRelawan(), Profile()],
+        children: <Widget>[Dashboard(), InputRelawan(), DataKordinator(),DataRelawan(),Profile(),],
         // set the controller
         controller: controller,
       ),
@@ -81,11 +84,11 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
             Tab(
               icon: Icon(Icons.fact_check),
-              text: "Update Data",
+              text: "Fakta",
             ),
             Tab(
               icon: Icon(Icons.recommend),
-              text: "Data Relawan",
+              text: "Rekomendasi",
 
             ),
 

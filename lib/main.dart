@@ -123,14 +123,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
       ),
 
-      body: Center(
+      body: SingleChildScrollView(
           child:Container(
             alignment: Alignment.center,
             child:Column(children:<Widget>[
 
               Container(
                 width: 90,
-                height: 900,
+                height: 90,
                 child: Image.asset('assets/images/logo.png'),
               ),
               Container(
@@ -208,6 +208,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   startHitung() async {
 
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Home()),
+    );
     var response = await http.post(Uri.parse(apiurl), body: {
       'username': username,
       'password': password,

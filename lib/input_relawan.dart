@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'package:mnc_identifier_ocr/mnc_identifier_ocr.dart';
@@ -22,10 +21,38 @@ class _InputRelawanState extends State<InputRelawan> {
   String apiurl = "http://udmami.com/stunting/index3.php"; //api url
 
 
-  var _tinggi = TextEditingController();
-  TextEditingController dateinput = TextEditingController();
-  String JK = "LK";
-  String CaraUkur = "berbaring";
+  late String nik;
+  late String nama;
+  late String tempatLahir;
+  late String golDarah;
+  late String tglLahir;
+  late String jenisKelamin;
+  late String alamat;
+  late String rt;
+  late String rw;
+  late String kelurahan;
+  late String kecamatan;
+  late String agama;
+  late String statusPerkawinan;
+  late String pekerjaan;
+  late String kewarganegaraan;
+  late String berlakuHingga;
+  late String provinsi;
+  late String kabKot;
+
+  var _nik = TextEditingController();
+  var _password = TextEditingController();
+
+  final TextEditingController tecNik = TextEditingController();
+  final TextEditingController tecNama = TextEditingController();
+  final TextEditingController tecDate = TextEditingController();
+  final TextEditingController tecTempalLahir = TextEditingController();
+  final TextEditingController tecKelamin = TextEditingController();
+  final TextEditingController tecAlamat = TextEditingController();
+  final TextEditingController tecAgama = TextEditingController();
+  final TextEditingController tecPerkawinan = TextEditingController();
+  final TextEditingController tecPekerjaan = TextEditingController();
+  final TextEditingController tecKewarganegaraan = TextEditingController();
 
   OcrResultModel? result;
 
@@ -42,7 +69,11 @@ class _InputRelawanState extends State<InputRelawan> {
 
     setState(() {
       result = res;
+
+
+
     });
+
   }
 
   _imgGlr() async {
@@ -60,12 +91,10 @@ class _InputRelawanState extends State<InputRelawan> {
   void initState() {
     tinggi = "";
     tanggallahir = "";
-    JK = "LK";
-    CaraUkur = "berbaring";
     errormsg = "";
     error = false;
     showprogress = false;
-    dateinput.text = "";
+
 
     //_username.text = "defaulttext";
     //_tinggi.text = "defaulttinggi";
@@ -80,26 +109,115 @@ class _InputRelawanState extends State<InputRelawan> {
       //color set to transperent or set your own color
     ));
 
-
     return Scaffold(
-      body: Stack(
-        children: [
-          Text('Ktp data: ${result?.toJson()}'),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(onPressed: scanKtp, child: const Text('PUSH HERE')),
-                const SizedBox(height: 8),
-                ElevatedButton(onPressed: _imgCmr, child: const Text('CAMERA')),
-                const SizedBox(height: 8),
-                ElevatedButton(onPressed: _imgGlr, child: const Text('GALLERY')),
-              ],
-            ),
+
+      body: Container(
+        padding: EdgeInsets.only(left: 20, right: 20),
+        child: SingleChildScrollView(
+
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              Text('Ktp data: ${result?.ktp?.nama}'),
+              ElevatedButton(onPressed: scanKtp, child: const Text('PUSH HERE')),
+              const SizedBox(height: 8),
+              Text(
+                "Profile Image",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    child: Icon(
+                      Icons.person,
+                      size: 30,
+                    ),
+                  ),
+                ],
+              ),
+              TextFormField(
+                controller: tecNik,
+                style: TextStyle(color: Colors.blue),
+                decoration: InputDecoration(
+                  labelText: 'NIK',
+                  labelStyle: TextStyle(color: Colors.blue),
+                ),
+              ),
+              TextFormField(
+                controller: tecNama,
+                style: TextStyle(color: Colors.blue),
+                decoration: InputDecoration(
+                  labelText: 'Nama Lengkap',
+                  labelStyle: TextStyle(color: Colors.blue),
+                ),
+              ),
+
+              TextFormField(
+                controller: tecKelamin,
+                style: TextStyle(color: Colors.blue),
+                decoration: InputDecoration(
+                  labelText: 'Jenis Kelamin',
+                  labelStyle: TextStyle(color: Colors.blue),
+                ),
+              ),
+              TextFormField(
+                controller: tecAlamat,
+                style: TextStyle(color: Colors.blue),
+                decoration: InputDecoration(
+                  labelText: 'Alamat',
+                  labelStyle: TextStyle(color: Colors.blue),
+                ),
+              ),
+              TextFormField(
+                controller: tecAgama,
+                style: TextStyle(color: Colors.blue),
+                decoration: InputDecoration(
+                  labelText: 'Agama',
+                  labelStyle: TextStyle(color: Colors.blue),
+                ),
+              ),
+              TextFormField(
+                controller: tecPerkawinan,
+                style: TextStyle(color: Colors.blue),
+                decoration: InputDecoration(
+                  labelText: 'Status Perkawinan',
+                  labelStyle: TextStyle(color: Colors.blue),
+                ),
+              ),
+              TextFormField(
+                controller: tecPekerjaan,
+                style: TextStyle(color: Colors.blue),
+                decoration: InputDecoration(
+                  labelText: 'Pekerjaan',
+                  labelStyle: TextStyle(color: Colors.blue),
+                ),
+              ),
+              TextFormField(
+                controller: tecKewarganegaraan,
+                style: TextStyle(color: Colors.blue),
+                decoration: InputDecoration(
+                  labelText: 'Kewarganegaraan',
+                  labelStyle: TextStyle(color: Colors.blue),
+                ),
+              ),
+
+            ],
           ),
-        ],
+        ),
       ),
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
+
   }
 
   setDialog1(BuildContext context) {
@@ -209,8 +327,6 @@ class _InputRelawanState extends State<InputRelawan> {
     var response = await http.post(Uri.parse(apiurl), body: {
       'umur': tanggallahir,
       'tinggi': tinggi,
-      'jk': JK,
-      'cara_ukur': CaraUkur
     });
     var jsondata = json.decode(response.body);
     var code = jsondata["code"];
