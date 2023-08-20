@@ -30,7 +30,7 @@ class HomeCalegState extends State<HomeCaleg> with SingleTickerProviderStateMixi
     super.initState();
 
     // Initialize the Tab Controller
-    controller = TabController(length: 3, vsync: this);
+    controller = TabController(length: 5, vsync: this);
   }
 
   @override
@@ -80,15 +80,25 @@ class HomeCalegState extends State<HomeCaleg> with SingleTickerProviderStateMixi
             Tab(
               // set icon to the tab
               icon: Icon(Icons.home),
+              text: "Dashboard",
+            ),
+            Tab(
+              icon: Icon(Icons.input),
               text: "Input Relawan",
             ),
             Tab(
-              icon: Icon(Icons.fact_check),
-              text: "Fakta",
+              icon: Icon(Icons.people),
+              text: "Korodinator",
+
             ),
             Tab(
-              icon: Icon(Icons.recommend),
-              text: "Rekomendasi",
+              icon: Icon(Icons.people),
+              text: "Relawan",
+
+            ),
+            Tab(
+              icon: Icon(Icons.perm_contact_cal_rounded),
+              text: "Profile",
 
             ),
 

@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:caleg/caleg/home_caleg.dart';
 import 'package:caleg/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -145,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: EdgeInsets.all(10),
                 child: TextField(
                   controller: _username, //set username controller
-                  style: TextStyle(color:Colors.black, fontSize:14),
+                  style: TextStyle(color:Colors.black, fontSize:18),
 
                   decoration: myInputDecoration(
                     label: "Username",
@@ -163,7 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: EdgeInsets.all(10),
                 child: TextField(
                   controller: _password, //set password controller
-                  style: TextStyle(color:Colors.black, fontSize:14),
+                  style: TextStyle(color:Colors.black, fontSize:18),
 
                   decoration: myInputDecoration(
                     label: "Password",
@@ -207,31 +209,50 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
   startHitung() async {
-
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => Home()),
     );
-    var response = await http.post(Uri.parse(apiurl), body: {
+     var response = await http.post(Uri.parse(apiurl), body: {
       'username': username,
       'password': password,
     });
     var jsondata = json.decode(response.body);
     var code = jsondata["code"];
+    var usernames = jsondata["username"];
+    var nama_karyawan = jsondata["nama_karyawan"];
+    var id_karyawan = jsondata["id_karyawan"];
+    var jabatan = jsondata["jabatan"];
     print(jsondata);
-    if (code =="berhasil")
+
+    if(code == "berhasil"){
+      // Obtain shared preferences.
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      // Save an integer value to 'counter' key.
+      await prefs.setString('username', usernames);
+      await prefs.setString('nama_karyawan', nama_karyawan);
+      await prefs.setString('id_karyawan', id_karyawan);
+      await prefs.setString('jabatan', jabatan);
+    }
+    if (jabatan =="RELAWAN")
     {
+
       var hasil = jsondata["message"];
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => Home()),
       );
 
-    }else if (code == "failed"){
-      setDialog1(context);
+    }else if (jabatan =="SUPER ADMIN"){
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomeCaleg()),
+      );
     }
     else {
-
+  setDialog1(context);
     }
 
   }
@@ -264,7 +285,7 @@ class _MyHomePageState extends State<MyHomePage> {
   myInputDecoration({required String label, required IconData icon}) {
     return InputDecoration(
       hintText: label, //show label as placeholder
-      hintStyle: TextStyle(color:Colors.black26, fontSize:14), //hint text style
+      hintStyle: TextStyle(color:Colors.black26, fontSize:18), //hint text style
       prefixIcon: Padding(
           padding: EdgeInsets.only(left:20, right:10),
           child:Icon(icon, color: Colors.black,)

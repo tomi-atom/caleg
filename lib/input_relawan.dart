@@ -8,6 +8,9 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'package:mnc_identifier_ocr/mnc_identifier_ocr.dart';
 import 'package:mnc_identifier_ocr/model/ocr_result_model.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class InputRelawan extends StatefulWidget {
   @override
@@ -17,42 +20,37 @@ class InputRelawan extends StatefulWidget {
 class _InputRelawanState extends State<InputRelawan> {
   late String errormsg;
   late bool error, showprogress;
-  late String tanggallahir, tinggi;
-  String apiurl = "http://udmami.com/stunting/index3.php"; //api url
-
+  String apiurl = "http://relawan.riaucore.id/app/inputpelaporan.php"; //api url
 
   late String nik;
   late String nama;
   late String tempatLahir;
-  late String golDarah;
   late String tglLahir;
   late String jenisKelamin;
   late String alamat;
+  late String hp;
   late String rt;
   late String rw;
   late String kelurahan;
   late String kecamatan;
-  late String agama;
-  late String statusPerkawinan;
-  late String pekerjaan;
-  late String kewarganegaraan;
-  late String berlakuHingga;
-  late String provinsi;
-  late String kabKot;
 
-  var _nik = TextEditingController();
-  var _password = TextEditingController();
 
-  final TextEditingController tecNik = TextEditingController();
-  final TextEditingController tecNama = TextEditingController();
-  final TextEditingController tecDate = TextEditingController();
-  final TextEditingController tecTempalLahir = TextEditingController();
-  final TextEditingController tecKelamin = TextEditingController();
-  final TextEditingController tecAlamat = TextEditingController();
-  final TextEditingController tecAgama = TextEditingController();
-  final TextEditingController tecPerkawinan = TextEditingController();
-  final TextEditingController tecPekerjaan = TextEditingController();
-  final TextEditingController tecKewarganegaraan = TextEditingController();
+ var tecNik = TextEditingController();
+ var tecNama = TextEditingController();
+ var tecTempalLahir = TextEditingController();
+ var tecDate = TextEditingController();
+ var tecAlamat = TextEditingController();
+ var tecHp = TextEditingController();
+ var tecKelamin = TextEditingController();
+ var tecKecamatan = TextEditingController();
+ var tecKelurahan = TextEditingController();
+ var tecRT = TextEditingController();
+ var tecRW = TextEditingController();
+  late String username ;
+  late String id_karyawan;
+  late String nama_karyawan ;
+  late String jabatan;
+
 
   OcrResultModel? result;
 
@@ -69,7 +67,6 @@ class _InputRelawanState extends State<InputRelawan> {
 
     setState(() {
       result = res;
-
 
 
     });
@@ -89,16 +86,42 @@ class _InputRelawanState extends State<InputRelawan> {
 
   @override
   void initState() {
-    tinggi = "";
-    tanggallahir = "";
     errormsg = "";
     error = false;
     showprogress = false;
 
+    nik = "";
+    nama= "";
+    tempatLahir = "";
+    tglLahir = "";
+    jenisKelamin = "";
+    alamat = "";
+    hp = "";
+    rt = "";
+    rw = "";
+    kelurahan = "";
+    kecamatan = "";
+    username = "";
+    id_karyawan = "";
+    nama_karyawan = "";
+    jabatan = "";
+
+    getDataUser();
 
     //_username.text = "defaulttext";
     //_tinggi.text = "defaulttinggi";
     super.initState();
+  }
+  getDataUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      username = prefs.getString('username')!;
+      id_karyawan = prefs.getString('id_karyawam')!;
+      nama_karyawan = prefs.getString('nama_karyawan')!;
+      jabatan = prefs.getString('jabatan')!;
+
+    });
+
   }
 
   @override
@@ -108,6 +131,22 @@ class _InputRelawanState extends State<InputRelawan> {
         statusBarColor: Colors.transparent
       //color set to transperent or set your own color
     ));
+    // Obtain shared preferences.
+
+
+    if(result != null) {
+      tecNik.text = '${result?.ktp?.nik}';
+      tecNama.text = '${result?.ktp?.nama}';
+      tecTempalLahir.text = '${result?.ktp?.tempatLahir}';
+      tecDate.text = '${result?.ktp?.tglLahir}';
+      tecAlamat.text = '${result?.ktp?.alamat}';
+      tecKelamin.text = '${result?.ktp?.jenisKelamin}';
+      tecKecamatan.text = '${result?.ktp?.kecamatan}';
+      tecKelurahan.text = '${result?.ktp?.kelurahan}';
+      tecRT.text = '${result?.ktp?.rt}';
+      tecRW.text = '${result?.ktp?.rw}';
+
+    }
 
     return Scaffold(
 
@@ -122,7 +161,29 @@ class _InputRelawanState extends State<InputRelawan> {
                 height: 10,
               ),
               Text('Ktp data: ${result?.ktp?.nama}'),
-              ElevatedButton(onPressed: scanKtp, child: const Text('PUSH HERE')),
+              ElevatedButton(onPressed: scanKtp, child: const Text('Foto KTP')),
+              const SizedBox(height: 8),
+              Text(
+                "Foto KTPA",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  CircleAvatar(
+                    child: Icon(
+                      Icons.person,
+                      size: 80,
+                    ),
+                  ),
+                ],
+              ),
+              ElevatedButton(onPressed: _imgCmr, child: const Text('Foto ')),
               const SizedBox(height: 8),
               Text(
                 "Profile Image",
@@ -146,70 +207,175 @@ class _InputRelawanState extends State<InputRelawan> {
                 ],
               ),
               TextFormField(
+
                 controller: tecNik,
                 style: TextStyle(color: Colors.blue),
                 decoration: InputDecoration(
                   labelText: 'NIK',
-                  labelStyle: TextStyle(color: Colors.blue),
+                  labelStyle: TextStyle(color: Colors.black87),
                 ),
+
               ),
               TextFormField(
                 controller: tecNama,
                 style: TextStyle(color: Colors.blue),
                 decoration: InputDecoration(
                   labelText: 'Nama Lengkap',
-                  labelStyle: TextStyle(color: Colors.blue),
+                  labelStyle: TextStyle(color: Colors.black87),
                 ),
+
               ),
 
+              TextFormField(
+                controller: tecTempalLahir,
+                style: TextStyle(color: Colors.blue),
+                decoration: InputDecoration(
+                  labelText: 'TempatLahir',
+                  labelStyle: TextStyle(color: Colors.black87),
+                ),
+
+              ),
+
+              Container(
+                padding: EdgeInsets.fromLTRB(10,0,10,0),
+                margin: EdgeInsets.only(top:10),
+                child: TextField(
+                  controller: tecDate, //set username controller
+                  style:TextStyle(color:Colors.black, fontSize:12),
+                  decoration: myInputDecoration(
+                    label: "Tanggal Lahir",
+                    icon: Icons.date_range,
+                  ),
+                  readOnly: true,
+
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                        context: context, initialDate: DateTime.now(),
+                        firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+                        lastDate: DateTime(2101)
+                    );
+
+                    if(pickedDate != null ){
+                      print(pickedDate);  //pickedDate output format => 2021-03-10 00:00:00.000
+                      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                      print(formattedDate); //formatted date output using intl package =>  2021-03-16
+                      //you can implement different kind of Date Format here according to your requirement
+
+                      setState(() {
+                        tecDate.text = formattedDate; //set output date to TextField value.
+                      });
+                    }else{
+                      print("Tanggal Belum di Input");
+                    }
+                  },
+
+                ),
+              ),
               TextFormField(
                 controller: tecKelamin,
                 style: TextStyle(color: Colors.blue),
                 decoration: InputDecoration(
                   labelText: 'Jenis Kelamin',
-                  labelStyle: TextStyle(color: Colors.blue),
+                  labelStyle: TextStyle(color: Colors.black87),
                 ),
+
               ),
               TextFormField(
                 controller: tecAlamat,
                 style: TextStyle(color: Colors.blue),
                 decoration: InputDecoration(
                   labelText: 'Alamat',
-                  labelStyle: TextStyle(color: Colors.blue),
+                  labelStyle: TextStyle(color: Colors.black87),
                 ),
+
               ),
               TextFormField(
-                controller: tecAgama,
+                controller: tecHp,
                 style: TextStyle(color: Colors.blue),
                 decoration: InputDecoration(
-                  labelText: 'Agama',
-                  labelStyle: TextStyle(color: Colors.blue),
+                  labelText: 'No HP',
+                  labelStyle: TextStyle(color: Colors.black87),
                 ),
+
               ),
               TextFormField(
-                controller: tecPerkawinan,
+                controller: tecKelamin,
                 style: TextStyle(color: Colors.blue),
                 decoration: InputDecoration(
-                  labelText: 'Status Perkawinan',
-                  labelStyle: TextStyle(color: Colors.blue),
+                  labelText: 'Jenis Kelamin',
+                  labelStyle: TextStyle(color: Colors.black87),
                 ),
+
               ),
               TextFormField(
-                controller: tecPekerjaan,
+                controller: tecKecamatan,
                 style: TextStyle(color: Colors.blue),
                 decoration: InputDecoration(
-                  labelText: 'Pekerjaan',
-                  labelStyle: TextStyle(color: Colors.blue),
+                  labelText: 'Kecamatan',
+                  labelStyle: TextStyle(color: Colors.black87),
                 ),
+
               ),
               TextFormField(
-                controller: tecKewarganegaraan,
+                controller: tecRT,
                 style: TextStyle(color: Colors.blue),
                 decoration: InputDecoration(
-                  labelText: 'Kewarganegaraan',
-                  labelStyle: TextStyle(color: Colors.blue),
+                  labelText: 'RT',
+                  labelStyle: TextStyle(color: Colors.black87),
                 ),
+
               ),
+              TextFormField(
+                controller: tecRW,
+                style: TextStyle(color: Colors.blue),
+                decoration: InputDecoration(
+                  labelText: 'RW',
+                  labelStyle: TextStyle(color: Colors.black87),
+                ),
+
+              ),
+              TextFormField(
+                controller: tecRW,
+                style: TextStyle(color: Colors.blue),
+                decoration: InputDecoration(
+                  labelText: 'TPS',
+                  labelStyle: TextStyle(color: Colors.black87),
+                ),
+
+              ),
+              Column(
+
+                children: [
+
+                  ElevatedButton(
+
+                    style: ElevatedButton.styleFrom(
+
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        nik = tecNik.text;
+                        nama = tecNama.text;
+                        tempatLahir = tecTempalLahir.text;
+                        tglLahir = tecTempalLahir.text;
+                        alamat = tecAlamat.text;
+                        jenisKelamin = tecKelamin.text;
+                        kelurahan = tecKelurahan.text;
+                        rt = tecRT.text;
+                        rw = tecRW.text;
+                        hp = tecHp.text;
+                      });
+                      startHitung();
+                    },
+                    child: const Text("Proses Pendaftaran"),
+                  ),
+
+                ],
+              ),
+
 
             ],
           ),
@@ -220,7 +386,7 @@ class _InputRelawanState extends State<InputRelawan> {
 
   }
 
-  setDialog1(BuildContext context) {
+  setDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -247,86 +413,24 @@ class _InputRelawanState extends State<InputRelawan> {
       },
     );
   }
-  setDialog2(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Container(
-            alignment: Alignment.center,
-            child: Image.asset('assets/images/stunt.png'),
-
-          ),
-          content: const Text('Dianjurkan Untuk Konsultasi Ke Ahli Gizi'),
-          actions: <Widget>[
-
-            TextButton(
-              child: Text("Tutup"),
-              onPressed: () {
-                //Put your code here which you want to execute on Cancel button click.
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-  setDialog3(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Container(
-            alignment: Alignment.center,
-            child: Image.asset('assets/images/normal.png'),
-
-          ),
-          actions: <Widget>[
-
-            TextButton(
-              child: Text("Tutup"),
-              onPressed: () {
-                //Put your code here which you want to execute on Cancel button click.
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-  setDialog4(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Container(
-            alignment: Alignment.center,
-            child: Image.asset('assets/images/tinggi.png'),
-
-          ),
-
-        actions: <Widget>[
-
-            TextButton(
-              child: Text("Tutup"),
-              onPressed: () {
-                //Put your code here which you want to execute on Cancel button click.
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   startHitung() async {
 
     var response = await http.post(Uri.parse(apiurl), body: {
-      'umur': tanggallahir,
-      'tinggi': tinggi,
+      'nik': nik,
+      'nama': nama,
+      'tempatLahir': tempatLahir,
+      'tanggalLahir': tglLahir,
+      'alamat': alamat,
+      'jenisKelamin': jenisKelamin,
+      'kelurahan': kelurahan,
+      'rt': rt,
+      'rw': rw,
+      'hp': hp,
+      'referensi': username,
+      'status': nik,
+      'jenis': nik,
+      'nama_tps': nik,
     });
     var jsondata = json.decode(response.body);
     var code = jsondata["code"];
@@ -334,18 +438,9 @@ class _InputRelawanState extends State<InputRelawan> {
     if (code =="berhasil")
     {
        var hasil = jsondata["message"];
-       if (hasil < -3){
-         setDialog1(context);
-       }else if (hasil >-3 && hasil < -2){
-         setDialog2(context);
-       }else if (hasil > 2){
-         setDialog4(context);
-       }else {
-         setDialog3(context);
-       }
+
 
     }else if (code == "failed"){
-      setDialog1(context);
     }
     else {
 
@@ -389,4 +484,5 @@ class _InputRelawanState extends State<InputRelawan> {
 
 
 }
+
 
