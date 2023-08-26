@@ -211,7 +211,7 @@ class _MyHomePageState extends State<MyHomePage> {
   startHitung() async {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Home()),
+      MaterialPageRoute(builder: (context) => HomeCaleg()),
     );
      var response = await http.post(Uri.parse(apiurl), body: {
       'username': username,

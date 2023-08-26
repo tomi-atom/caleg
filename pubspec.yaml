@@ -59,6 +59,10 @@ dev_dependencies:
   mnc_identifier_ocr: 1.0.20
   image_picker: ^1.0.2
   shared_preferences: ^2.2.0
+  url_launcher: ^6.1.12
+
+  #animation lottie file
+  lottie: ^2.6.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
