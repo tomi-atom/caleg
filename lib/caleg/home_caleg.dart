@@ -1,12 +1,15 @@
 import 'package:caleg/caleg/dashboard.dart';
 import 'package:caleg/caleg/data_koordinator.dart';
 import 'package:caleg/caleg/data_relawan.dart';
+import 'package:caleg/page/filter_relawan_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:caleg/update_relawan.dart';
 import 'package:caleg/profile.dart';
 import 'package:caleg/update_data.dart';
 import 'package:caleg/input_relawan.dart';
 import 'package:flutter/services.dart';
+
+import '../page/filter_koordinator_list_page.dart';
 void main() {
   runApp(MaterialApp(
     // Title
@@ -66,7 +69,7 @@ class HomeCalegState extends State<HomeCaleg> with SingleTickerProviderStateMixi
       // Set the TabBar view as the body of the Scaffold
       body: TabBarView(
         // Add tabs as widgets
-        children: <Widget>[Dashboard(), InputRelawan(), DataKordinator(),DataRelawan(),Profile(),],
+        children: <Widget>[Dashboard(), InputRelawan(), FilterKoordinatorListPage(),FilterRelawanListPage(),Profile(),],
         // set the controller
         controller: controller,
       ),
