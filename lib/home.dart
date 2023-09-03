@@ -1,3 +1,6 @@
+import 'package:caleg/caleg/data_relawan.dart';
+import 'package:caleg/page/filter_network_list_page.dart';
+import 'package:caleg/page/filter_relawan_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:caleg/update_relawan.dart';
 import 'package:caleg/profile.dart';
@@ -63,7 +66,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       // Set the TabBar view as the body of the Scaffold
       body: TabBarView(
         // Add tabs as widgets
-        children: <Widget>[InputRelawan(), UpdateRelawan(), Profile()],
+        children: <Widget>[InputRelawan(), UpdateRelawan(), FilterRelawanListPage()],
         // set the controller
         controller: controller,
       ),
