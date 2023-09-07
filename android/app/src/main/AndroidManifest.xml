@@ -2,7 +2,7 @@
     package="com.atomstudio.caleg">
 
    <application
-        android:label="caleg"
+        android:label="EXE Relawan"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

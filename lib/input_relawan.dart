@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:ui';
 
+import 'package:caleg/api/base_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -20,7 +22,7 @@ class InputRelawan extends StatefulWidget {
 class _InputRelawanState extends State<InputRelawan> {
   late String errormsg;
   late bool error, showprogress;
-  String apiurl = "http://relawan.riaucore.id/app/inputpelaporan.php"; //api url
+  String apiurl = Apis.inputRelawanApi; //api url
 
   late String nik;
   late String nama;
@@ -46,6 +48,7 @@ class _InputRelawanState extends State<InputRelawan> {
  var tecKelurahan = TextEditingController();
  var tecRT = TextEditingController();
  var tecRW = TextEditingController();
+ var tecTps = TextEditingController();
   late String username ;
   late String id_karyawan;
   late String nama_karyawan ;
@@ -151,11 +154,11 @@ class _InputRelawanState extends State<InputRelawan> {
     return Scaffold(
 
       body: Container(
-        padding: EdgeInsets.only(left: 20, right: 20),
+        padding: EdgeInsets.only(left: 10, right: 10),
         child: SingleChildScrollView(
 
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
                 height: 10,
@@ -206,45 +209,70 @@ class _InputRelawanState extends State<InputRelawan> {
                   ),
                 ],
               ),
-              TextFormField(
 
-                controller: tecNik,
-                style: TextStyle(color: Colors.blue),
-                decoration: InputDecoration(
-                  labelText: 'NIK',
-                  labelStyle: TextStyle(color: Colors.black87),
+              Container(
+                padding: EdgeInsets.all(5),
+                child: TextField(
+                  controller: tecNik, //set username controller
+                  style: TextStyle(color:Colors.black, fontSize:14),
+
+                  decoration: InputDecoration(
+                    labelText: "NIK",
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(
+                      Icons.account_circle,
+                    )
+                  ),
+
                 ),
-
-              ),
-              TextFormField(
-                controller: tecNama,
-                style: TextStyle(color: Colors.blue),
-                decoration: InputDecoration(
-                  labelText: 'Nama Lengkap',
-                  labelStyle: TextStyle(color: Colors.black87),
-                ),
-
-              ),
-
-              TextFormField(
-                controller: tecTempalLahir,
-                style: TextStyle(color: Colors.blue),
-                decoration: InputDecoration(
-                  labelText: 'TempatLahir',
-                  labelStyle: TextStyle(color: Colors.black87),
-                ),
-
               ),
 
               Container(
-                padding: EdgeInsets.fromLTRB(10,0,10,0),
-                margin: EdgeInsets.only(top:10),
+                padding: EdgeInsets.all(5),
+                child: TextField(
+                  controller: tecNama, //set username controller
+                  style: TextStyle(color:Colors.black, fontSize:14),
+
+                  decoration: InputDecoration(
+                    labelText: "Nama Lengkap",
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(
+                    Icons.account_circle,
+                  )
+                  ),
+
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(5),
+                child: TextField(
+                  controller: tecTempalLahir, //set username controller
+                  style: TextStyle(color:Colors.black, fontSize:14),
+
+                  decoration: InputDecoration(
+                      labelText: "Tempat Lahir",
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(
+                        Icons.location_city,
+
+                      )
+                  ),
+
+                ),
+              ),
+
+
+              Container(
+                padding: EdgeInsets.all(5),
                 child: TextField(
                   controller: tecDate, //set username controller
                   style:TextStyle(color:Colors.black, fontSize:12),
-                  decoration: myInputDecoration(
-                    label: "Tanggal Lahir",
-                    icon: Icons.date_range,
+                  decoration: InputDecoration(
+                    labelText: "Tanggal Lahir",
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(
+                      Icons.date_range,
+                    ),
                   ),
                   readOnly: true,
 
@@ -271,90 +299,138 @@ class _InputRelawanState extends State<InputRelawan> {
 
                 ),
               ),
-              TextFormField(
-                controller: tecKelamin,
-                style: TextStyle(color: Colors.blue),
-                decoration: InputDecoration(
-                  labelText: 'Jenis Kelamin',
-                  labelStyle: TextStyle(color: Colors.black87),
-                ),
+              Container(
+                padding: EdgeInsets.all(5),
+                child: TextField(
+                  controller: tecKelamin, //set username controller
+                  style: TextStyle(color:Colors.black, fontSize:14),
 
+                  decoration: InputDecoration(
+                    labelText: "Jenis Kelamin",
+                        border: OutlineInputBorder(),
+                     prefixIcon: Icon(
+                       Icons.male,
+                    ),
+                  ),
+
+                ),
               ),
-              TextFormField(
-                controller: tecAlamat,
-                style: TextStyle(color: Colors.blue),
-                decoration: InputDecoration(
-                  labelText: 'Alamat',
-                  labelStyle: TextStyle(color: Colors.black87),
-                ),
+              Container(
+                padding: EdgeInsets.all(5),
+                child: TextField(
+                  controller: tecAlamat, //set username controller
+                  style: TextStyle(color:Colors.black, fontSize:14),
 
+                  decoration: InputDecoration(
+                    labelText: "Alamat",
+                      border: OutlineInputBorder(),
+                    prefixIcon: Icon(
+                      Icons.location_city,
+                    )
+
+                  ),
+
+                ),
               ),
-              TextFormField(
-                controller: tecHp,
-                style: TextStyle(color: Colors.blue),
-                decoration: InputDecoration(
-                  labelText: 'No HP',
-                  labelStyle: TextStyle(color: Colors.black87),
-                ),
+              Container(
+                padding: EdgeInsets.all(5),
+                child: TextField(
+                  controller: tecHp, //set username controller
+                  style: TextStyle(color:Colors.black, fontSize:14),
 
+                  decoration: InputDecoration(
+                    labelText: "No Hp",
+                        border: OutlineInputBorder(),
+                    prefixIcon: Icon(
+                      Icons.phone,
+                    )
+
+                  ),
+
+                ),
               ),
-              TextFormField(
-                controller: tecKelamin,
-                style: TextStyle(color: Colors.blue),
-                decoration: InputDecoration(
-                  labelText: 'Jenis Kelamin',
-                  labelStyle: TextStyle(color: Colors.black87),
-                ),
+              Container(
+                padding: EdgeInsets.all(5),
+                child: TextField(
+                  controller: tecKecamatan, //set username controller
+                  style: TextStyle(color:Colors.black, fontSize:14),
 
+                  decoration: InputDecoration(
+                    labelText: "Kecamatan",
+                       border: OutlineInputBorder(),
+                    prefixIcon: Icon(
+                      Icons.map,
+                    )
+
+                  ),
+
+                ),
               ),
-              TextFormField(
-                controller: tecKecamatan,
-                style: TextStyle(color: Colors.blue),
-                decoration: InputDecoration(
-                  labelText: 'Kecamatan',
-                  labelStyle: TextStyle(color: Colors.black87),
-                ),
+              Container(
+                padding: EdgeInsets.all(5),
+                child: TextField(
+                  controller: tecRT, //set username controller
+                  style: TextStyle(color:Colors.black, fontSize:14),
 
+                  decoration: InputDecoration(
+                    labelText: "RT",
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(
+                      Icons.map,
+                    )
+
+                  ),
+
+                ),
               ),
-              TextFormField(
-                controller: tecRT,
-                style: TextStyle(color: Colors.blue),
-                decoration: InputDecoration(
-                  labelText: 'RT',
-                  labelStyle: TextStyle(color: Colors.black87),
-                ),
+              Container(
+                padding: EdgeInsets.all(5),
+                child: TextField(
+                  controller: tecRW, //set username controller
+                  style: TextStyle(color:Colors.black, fontSize:14),
 
+                  decoration: InputDecoration(
+                    labelText: "RW",
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(
+                      Icons.map,
+                    )
+
+                  ),
+
+                ),
               ),
-              TextFormField(
-                controller: tecRW,
-                style: TextStyle(color: Colors.blue),
-                decoration: InputDecoration(
-                  labelText: 'RW',
-                  labelStyle: TextStyle(color: Colors.black87),
-                ),
+              Container(
+                padding: EdgeInsets.all(5),
+                child: TextField(
+                  controller: tecTps, //set username controller
+                  style: TextStyle(color:Colors.black, fontSize:14),
 
-              ),
-              TextFormField(
-                controller: tecRW,
-                style: TextStyle(color: Colors.blue),
-                decoration: InputDecoration(
-                  labelText: 'TPS',
-                  labelStyle: TextStyle(color: Colors.black87),
-                ),
+                  decoration: InputDecoration(
+                    labelText: "TPS",
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(
+                      Icons.map,
+                    )
 
+                  ),
+
+                ),
               ),
               Column(
-
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-
                   ElevatedButton(
 
                     style: ElevatedButton.styleFrom(
-
+                    textStyle: const TextStyle(fontSize: 16),
+                      padding: EdgeInsets.all(5),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(5),
+
                       ),
-                    ),
+                      ),
                     onPressed: () {
                       setState(() {
                         nik = tecNik.text;
@@ -371,6 +447,7 @@ class _InputRelawanState extends State<InputRelawan> {
                       startHitung();
                     },
                     child: const Text("Proses Pendaftaran"),
+
                   ),
 
                 ],

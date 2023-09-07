@@ -8,9 +8,15 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'api/base_api.dart';
+
+
+
 void main() {
   runApp(const MyApp());
+
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -60,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
   late String errormsg;
   late bool error, showprogress;
   late String username, password;
-  String apiurl = "http://relawan.riaucore.id/app/login.php"; //api url
+  String apiurl = Apis.loginApi;//api url
 
 
   var _username = TextEditingController();

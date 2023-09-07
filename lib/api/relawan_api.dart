@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:caleg/api/base_api.dart';
 import 'package:caleg/model/relawan.dart';
 import 'package:http/http.dart' as http;
 
@@ -7,8 +8,7 @@ import '../model/book.dart';
 
 class RelawansApi {
   static Future<List<Relawan>> getRelawans(String query) async {
-    final url = Uri.parse(
-        'https://relawan.riaucore.id/app/data_relawan.php');
+    final url = Uri.parse(Apis.dataRelawanApi);
     final response = await http.get(url);
 
     if (response.statusCode == 200) {

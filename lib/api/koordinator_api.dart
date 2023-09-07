@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:caleg/api/base_api.dart';
 import 'package:caleg/model/koordinator.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,7 +9,7 @@ import '../model/book.dart';
 class KoordinatorsApi {
   static Future<List<Koordinator>> getKoordinators(String query) async {
     final url = Uri.parse(
-        'https://relawan.riaucore.id/app/data_koordinator.php');
+       Apis.dataKorodinatorApi);
     final response = await http.get(url);
 
     if (response.statusCode == 200) {

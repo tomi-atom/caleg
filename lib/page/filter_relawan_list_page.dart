@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:caleg/api/base_api.dart';
 import 'package:caleg/main.dart';
 import 'package:caleg/model/relawan.dart';
 import 'package:caleg/widget/search_widget.dart';
@@ -17,7 +18,7 @@ class FilterRelawanListPageState extends State<FilterRelawanListPage> {
   String query = '';
   Timer? debouncer;
 
-  String url = 'https://relawan.riaucore.id/foto/';
+  String url = Apis.fotoApi;
 
   @override
   void initState() {

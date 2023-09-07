@@ -64,6 +64,9 @@ dev_dependencies:
 
   #animation lottie file
   lottie: ^2.6.0
+  flutter_riverpod: ^2.4.0
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
